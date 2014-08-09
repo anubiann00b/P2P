@@ -20,13 +20,15 @@ public class MulticastTask implements Runnable {
     @Override
     public void run() {
         try {
-            InetAddress group = InetAddress.getByName("203.0.113.0");
+            InetAddress group = InetAddress.getByName(Main.IP);
             MulticastSocket socket = new MulticastSocket(Main.PORT);
             socket.setSoTimeout(CONNECTION_TIMEOUT);
+            state = State.CONNECTING;
             socket.joinGroup(group);
+            state = State.CONNECTED;
             
-            while (state == State.DISCONNECTED) {
-                Data request = new Data("RJ");
+            while (state == State.CONNECTED) {
+                Data request = new Data("RJ"); //Request Jellyfish?
                 Data.send(socket, request);
                 Data d = null;
                 
