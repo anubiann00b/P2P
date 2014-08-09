@@ -1,6 +1,11 @@
+/bin/
 /build/
 /dist/
 /nbproject/
 
 /build.xml
 /manifest.mf
+/.classpath
+/.project
+
+*~
