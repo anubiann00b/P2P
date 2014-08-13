@@ -28,7 +28,7 @@ public class MulticastTask implements Runnable {
             state = State.CONNECTED;
             
             while (state == State.CONNECTED) {
-                Data request = new Data("RJ"); //Request Jellyfish?
+                Data request = new Data("RJ");
                 Data.send(socket, request);
                 Data d = null;
                 

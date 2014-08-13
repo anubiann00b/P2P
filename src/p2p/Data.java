@@ -10,11 +10,12 @@ public class Data {
     public static final int MAX_BUFFER = 256;
     private byte[] buf;
     
+    public Data() {
+        buf = new byte[MAX_BUFFER];
+    }
+    
     public Data(String s) {
-        if (s == null)
-            buf = new byte[MAX_BUFFER];
-        else
-            buf = s.getBytes();
+        buf = s.getBytes();
     }
     
     public static void send(MulticastSocket s, Data d) throws IOException {
@@ -22,7 +23,7 @@ public class Data {
     }
     
     public static Data receive(MulticastSocket s) throws IOException {
-        Data d = new Data(null); //Why not use a constructor that takes 0 args?
+        Data d = new Data();
         s.receive(new DatagramPacket(d.buf, d.buf.length));
         return d;
     }
