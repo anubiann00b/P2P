@@ -2,6 +2,7 @@ package p2p;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 
 public class MulticastTask implements Runnable {
@@ -22,7 +23,9 @@ public class MulticastTask implements Runnable {
         try {
             InetAddress group = InetAddress.getByName(Main.IP);
             MulticastSocket socket = new MulticastSocket(Main.PORT);
+            socket.bind(new InetSocketAddress(7777));
             socket.setSoTimeout(CONNECTION_TIMEOUT);
+            socket.setBroadcast(true);
             socket.setLoopbackMode(true);
             state = State.CONNECTING;
             socket.joinGroup(group);
