@@ -27,4 +27,9 @@ public class Data {
         s.receive(new DatagramPacket(d.buf, d.buf.length));
         return d;
     }
+    
+    @Override
+    public String toString() {
+        return new String(buf);
+    }
 }

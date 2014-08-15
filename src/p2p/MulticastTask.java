@@ -23,6 +23,7 @@ public class MulticastTask implements Runnable {
             InetAddress group = InetAddress.getByName(Main.IP);
             MulticastSocket socket = new MulticastSocket(Main.PORT);
             socket.setSoTimeout(CONNECTION_TIMEOUT);
+            socket.setLoopbackMode(true);
             state = State.CONNECTING;
             socket.joinGroup(group);
             state = State.CONNECTED;
@@ -30,9 +31,8 @@ public class MulticastTask implements Runnable {
             while (state == State.CONNECTED) {
                 Data request = new Data("RJ");
                 Data.send(socket, request);
-                Data d = null;
-                
-                d = Data.receive(socket);
+                Data d = Data.receive(socket);
+                System.out.println(d);
             }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
