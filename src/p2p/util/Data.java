@@ -19,6 +19,7 @@ public class Data {
     private static Map<String, Interpereter> interpereters;
     
     public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
+    public static String TYPE = "TYPE";
     
     public static void init() {
         interpereters = new HashMap<String, Interpereter>();
