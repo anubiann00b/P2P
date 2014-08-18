@@ -7,9 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
+
 import p2p.Main;
-import p2p.util.interpreter.Interpereter;
-import p2p.util.interpreter.InterpereterFirst;
 
 public class Data {
     
@@ -23,14 +22,14 @@ public class Data {
     public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
     public static String TYPE = "TYPE";
     
-    private static Map<String, Interpereter> interpereters;
+    private static Map<String, Interpreter> interpreters;
     
     public static void init() {
-        interpereters = new HashMap<String, Interpereter>();
-        interpereters.put(FIRST_PACKET, new InterpereterFirst());
-        interpereters.put(REQUEST_JOIN, new Interpereter());
-        interpereters.put(ACCEPT_JOIN, new Interpereter());
-        interpereters.put(REJECT_JOIN, new Interpereter());
+        interpreters = new HashMap<String, Interpreter>();
+        interpreters.put(FIRST_PACKET, Interpreter.FIRST_PACKET);
+        interpreters.put(REQUEST_JOIN, Interpreter.BASIC);
+        interpreters.put(ACCEPT_JOIN, Interpreter.BASIC);
+        interpreters.put(REJECT_JOIN, Interpreter.BASIC);
     }
     
     private byte[] buf;
@@ -51,7 +50,7 @@ public class Data {
     
     public Map<String, String> interperet() {
         String s = new String(buf);
-        return interpereters.get(s.substring(0, 2)).interperet(s);
+        return interpreters.get(s.substring(0, 2)).interpret(s);
     }
     
     public static void send(DatagramSocket s, InetAddress destIp, int destPort, Data d) {
