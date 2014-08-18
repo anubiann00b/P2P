@@ -63,6 +63,7 @@ class Rejection implements Runnable {
     
     @Override
     public void run() {
+        Debug.print("Rejecting join from " + destIp + ":" + destPort);
         Data.send(socket, destIp, destPort, new Data(Data.REJECT_JOIN));
     }
 }
