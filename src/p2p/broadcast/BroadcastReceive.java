@@ -4,8 +4,9 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import p2p.util.Data;
+import java.util.Map;
 import p2p.Main;
+import p2p.util.Data;
 
 public class BroadcastReceive implements Runnable {
     
@@ -29,5 +30,6 @@ public class BroadcastReceive implements Runnable {
             throw new RuntimeException("Socket timed out: " + e);
         }
         
+        Map<String, String> map = d.interperet();
     }
 }

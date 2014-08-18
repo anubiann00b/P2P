@@ -9,13 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 import p2p.Main;
 import p2p.util.interpreter.Interpereter;
-import p2p.util.interpreter.InterpereterFirstPacket;
+import p2p.util.interpreter.InterpereterFirst;
 
 public class Data {
     
     public static final int MAX_BUFFER = 256;
     public static final String REQUEST_JOIN = "RJ";
-    public static final String FIRST_PACKET = "RJ";
+    public static final String ACCEPT_JOIN = "AJ";
+    public static final String REJECT_JOIN = "RE";
+    public static final String FIRST_PACKET = "FP";
     private static Map<String, Interpereter> interpereters;
     
     public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
@@ -23,7 +25,10 @@ public class Data {
     
     public static void init() {
         interpereters = new HashMap<String, Interpereter>();
-        interpereters.put(FIRST_PACKET, new InterpereterFirstPacket());
+        interpereters.put(FIRST_PACKET, new InterpereterFirst());
+        interpereters.put(REQUEST_JOIN, new Interpereter());
+        interpereters.put(ACCEPT_JOIN, new Interpereter());
+        interpereters.put(REJECT_JOIN, new Interpereter());
     }
     
     private byte[] buf;

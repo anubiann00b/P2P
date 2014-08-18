@@ -43,7 +43,8 @@ public class NetworkJoin implements Runnable {
                 state = State.CREATE;
                 break;
             }
-            System.out.println(d);
+            if (d.interperet().get(Data.TYPE).equals(Data.ACCEPT_JOIN))
+                state = State.CONNECTED;
         }
         
         broadcastRecv = new BroadcastReceive();
@@ -59,7 +60,7 @@ public class NetworkJoin implements Runnable {
     }
     
     private void joinNetwork() {
-        new Thread(new BroadcastReceive()).start();
         new Thread(new ConnectionAccept()).start();
+        new Thread(new BroadcastReceive()).start();
     }
 }

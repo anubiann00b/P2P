@@ -3,7 +3,7 @@ package p2p.util.interpreter;
 import java.util.Map;
 import p2p.util.Data;
 
-public class InterpereterFirstPacket extends Interpereter {
+public class InterpereterFirst extends Interpereter {
 
     @Override
     public Map<String, String> interperet(String s) {

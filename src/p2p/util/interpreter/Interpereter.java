@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import p2p.util.Data;
 
-public abstract class Interpereter {
+public class Interpereter {
     
     public Map<String, String> interperet(String s) {
         Map<String, String> map = new HashMap<String, String>();
