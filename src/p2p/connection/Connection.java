@@ -3,6 +3,7 @@ package p2p.connection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.Map;
 import p2p.util.Data;
 
 public class Connection implements Runnable {
@@ -27,5 +28,8 @@ public class Connection implements Runnable {
         }
         
         Data d = new Data(recvBuf);
+        Map<String, String> data = d.interperet();
+        int numConnections = Integer.valueOf(data.get(Data.NUM_CONNECTIONS));
+        connectionAccept.setConnections(numConnections);
     }
 }

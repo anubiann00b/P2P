@@ -1,6 +1,7 @@
 package p2p;
 
 import p2p.broadcast.NetworkJoin;
+import p2p.util.Data;
 
 public class Main {
     
@@ -9,6 +10,7 @@ public class Main {
     public static final int MAX_NETWORK_SIZE = 50;
     
     public static void main(String[] args) {
+        Data.init();
         new Thread(new NetworkJoin()).start();
     }
 }

@@ -5,12 +5,26 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
+import java.util.Map;
 import p2p.Main;
+import p2p.util.interpreter.Interpereter;
+import p2p.util.interpreter.InterpereterFirstPacket;
 
 public class Data {
     
     public static final int MAX_BUFFER = 256;
     public static final String REQUEST_JOIN = "RJ";
+    public static final String FIRST_PACKET = "RJ";
+    private static Map<String, Interpereter> interpereters;
+    
+    public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
+    
+    public static void init() {
+        interpereters = new HashMap<String, Interpereter>();
+        interpereters.put(FIRST_PACKET, new InterpereterFirstPacket());
+    }
+    
     private byte[] buf;
     
     public Data() {
@@ -23,6 +37,11 @@ public class Data {
     
     public Data(byte[] b) {
         buf = b;
+    }
+    
+    public Map<String, String> interperet() {
+        String s = new String(buf);
+        return interpereters.get(s.substring(0, 2)).interperet(s);
     }
     
     public static void send(DatagramSocket s, Data d) {
