@@ -16,7 +16,7 @@ public class NetworkJoin implements Runnable {
     private static final int CONNECTION_TIMEOUT = 1000;
     private State state;
     DatagramSocket sendSocket;
-    BroadcastReceive broadcastRecv;
+    BroadcastListener broadcastRecv;
     
     public NetworkJoin() {
         state = State.DISCONNECTED;
@@ -53,7 +53,7 @@ public class NetworkJoin implements Runnable {
             }
         }
         
-        broadcastRecv = new BroadcastReceive();
+        broadcastRecv = new BroadcastListener();
         
         if (state == State.CONNECTED)
             joinNetwork();
@@ -62,11 +62,11 @@ public class NetworkJoin implements Runnable {
     }
     
     private void createNetwork() {
-        new Thread(new BroadcastReceive()).start();
+        new Thread(new BroadcastListener()).start();
     }
     
     private void joinNetwork() {
         new Thread(new ConnectionFactory()).start();
-        new Thread(new BroadcastReceive()).start();
+        new Thread(new BroadcastListener()).start();
     }
 }

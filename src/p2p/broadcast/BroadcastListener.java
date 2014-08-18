@@ -9,7 +9,7 @@ import p2p.Main;
 import p2p.util.Data;
 import p2p.util.Debug;
 
-public class BroadcastReceive implements Runnable {
+public class BroadcastListener implements Runnable {
     
     private DatagramSocket recvSocket;
     
