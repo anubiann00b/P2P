@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 import p2p.Main;
+import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
 
@@ -35,5 +36,13 @@ public class BroadcastListener implements Runnable {
         
         Debug.print("Recieved broadcast packet: " + d);
         Map<String, String> map = d.interperet();
+        switch(map.get(Data.TYPE)) {
+            case Data.REQUEST_JOIN:
+                if (!Action.suggestAction(Action.ADD_NEW))
+                    new Thread(new Rejection()).start();
+                else
+                    new Thread(new AddNodeProcess()).start();
+                break;
+        }
     }
 }

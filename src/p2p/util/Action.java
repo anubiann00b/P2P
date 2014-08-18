@@ -6,7 +6,7 @@ public enum Action {
     
     private static Action current = null;
     
-    public boolean suggestAction(Action a) {
+    public static boolean suggestAction(Action a) {
         if (current == null) {
             current = a;
             return true;

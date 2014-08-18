@@ -13,11 +13,12 @@ import p2p.util.interpreter.InterpereterFirst;
 
 public class Data {
     
-    public static final int MAX_BUFFER = 256;
     public static final String REQUEST_JOIN = "RJ";
     public static final String ACCEPT_JOIN = "AJ";
     public static final String REJECT_JOIN = "RE";
     public static final String FIRST_PACKET = "FP";
+    
+    public static final int MAX_BUFFER = 256;
     private static Map<String, Interpereter> interpereters;
     
     public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
