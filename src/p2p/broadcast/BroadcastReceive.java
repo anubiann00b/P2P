@@ -7,6 +7,7 @@ import java.net.SocketTimeoutException;
 import java.util.Map;
 import p2p.Main;
 import p2p.util.Data;
+import p2p.util.Debug;
 
 public class BroadcastReceive implements Runnable {
     
@@ -23,6 +24,8 @@ public class BroadcastReceive implements Runnable {
             throw new RuntimeException("Failed to create recv socket: " + e);
         }
         
+        Debug.print("Starting broadcast listener, waiting for broadcasts.");
+        
         Data d;
         try {
             d = Data.receive(recvSocket);
@@ -30,6 +33,7 @@ public class BroadcastReceive implements Runnable {
             throw new RuntimeException("Socket timed out: " + e);
         }
         
+        Debug.print("Recieved broadcast packet: " + d);
         Map<String, String> map = d.interperet();
     }
 }

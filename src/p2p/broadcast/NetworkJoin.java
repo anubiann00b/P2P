@@ -5,6 +5,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import p2p.connection.ConnectionFactory;
 import p2p.util.Data;
+import p2p.util.Debug;
 
 public class NetworkJoin implements Runnable {
     
@@ -30,9 +31,11 @@ public class NetworkJoin implements Runnable {
         } catch (SocketException e) {
             throw new RuntimeException("Can't setup socket: " + e);
         }
-
+        
+        Debug.print("Opened scouting socket, attempting to connect.");
+        
         state = State.CONNECTING;
-
+        
         while (state == State.CONNECTING) {
             Data request = new Data(Data.REQUEST_JOIN);
             Data.send(sendSocket, request);
@@ -41,10 +44,13 @@ public class NetworkJoin implements Runnable {
                 d = Data.receive(sendSocket);
             } catch (SocketTimeoutException e) {
                 state = State.CREATE;
+                Debug.print("No response, creating network.");
                 break;
             }
-            if (d.interperet().get(Data.TYPE).equals(Data.ACCEPT_JOIN))
+            if (d.interperet().get(Data.TYPE).equals(Data.ACCEPT_JOIN)) {
+                Debug.print("Response, found network.");
                 state = State.CONNECTED;
+            }
         }
         
         broadcastRecv = new BroadcastReceive();
