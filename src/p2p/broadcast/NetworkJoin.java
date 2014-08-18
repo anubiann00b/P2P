@@ -3,7 +3,7 @@ package p2p.broadcast;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import p2p.connection.ConnectionAccept;
+import p2p.connection.ConnectionFactory;
 import p2p.util.Data;
 
 public class NetworkJoin implements Runnable {
@@ -60,7 +60,7 @@ public class NetworkJoin implements Runnable {
     }
     
     private void joinNetwork() {
-        new Thread(new ConnectionAccept()).start();
+        new Thread(new ConnectionFactory()).start();
         new Thread(new BroadcastReceive()).start();
     }
 }

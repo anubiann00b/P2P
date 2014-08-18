@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import p2p.Main;
 
-public class ConnectionAccept implements Runnable {
+public class ConnectionFactory implements Runnable {
     
     private ServerSocket server;
     private int connected;
