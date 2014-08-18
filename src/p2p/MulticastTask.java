@@ -1,9 +1,7 @@
 package p2p;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.MulticastSocket;
+import java.net.DatagramSocket;
 
 public class MulticastTask implements Runnable {
     
@@ -21,18 +19,14 @@ public class MulticastTask implements Runnable {
     @Override
     public void run() {
         try {
-            InetAddress group = InetAddress.getByName(Main.IP);
-            MulticastSocket socket = new MulticastSocket(Main.PORT);
-            socket.bind(new InetSocketAddress(7777));
+            DatagramSocket socket = new DatagramSocket();
             socket.setSoTimeout(CONNECTION_TIMEOUT);
             socket.setBroadcast(true);
-            socket.setLoopbackMode(true);
-            state = State.CONNECTING;
-            socket.joinGroup(group);
-            state = State.CONNECTED;
             
-            while (state == State.CONNECTED) {
-                Data request = new Data("RJ");
+            state = State.CONNECTING;
+            
+            while (state == State.CONNECTING) {
+                Data request = new Data(Data.REQUEST_JOIN);
                 Data.send(socket, request);
                 Data d = Data.receive(socket);
                 System.out.println(d);

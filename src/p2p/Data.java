@@ -2,12 +2,13 @@ package p2p;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 
 public class Data {
     
     public static final int MAX_BUFFER = 256;
+    static String REQUEST_JOIN = "RJ";
     private byte[] buf;
     
     public Data() {
@@ -18,11 +19,11 @@ public class Data {
         buf = s.getBytes();
     }
     
-    public static void send(MulticastSocket s, Data d) throws IOException {
+    public static void send(DatagramSocket s, Data d) throws IOException {
         s.send(new DatagramPacket(d.buf, d.buf.length, InetAddress.getByName(Main.IP), Main.PORT));
     }
     
-    public static Data receive(MulticastSocket s) throws IOException {
+    public static Data receive(DatagramSocket s) throws IOException {
         Data d = new Data();
         s.receive(new DatagramPacket(d.buf, d.buf.length));
         return d;
