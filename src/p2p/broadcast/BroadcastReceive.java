@@ -1,9 +1,11 @@
-package p2p;
+package p2p.broadcast;
 
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import p2p.util.Data;
+import p2p.Main;
 
 public class BroadcastReceive implements Runnable {
     

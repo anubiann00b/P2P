@@ -1,5 +1,7 @@
 package p2p;
 
+import p2p.broadcast.NetworkJoin;
+
 public class Main {
     
     public static final String IP = "255.255.255.255";

@@ -1,15 +1,16 @@
-package p2p;
+package p2p.util;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import p2p.Main;
 
 public class Data {
     
     public static final int MAX_BUFFER = 256;
-    static String REQUEST_JOIN = "RJ";
+    public static final String REQUEST_JOIN = "RJ";
     private byte[] buf;
     
     public Data() {

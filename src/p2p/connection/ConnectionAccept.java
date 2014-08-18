@@ -1,8 +1,9 @@
-package p2p;
+package p2p.connection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import p2p.Main;
 
 public class ConnectionAccept implements Runnable {
     

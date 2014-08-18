@@ -1,8 +1,9 @@
-package p2p;
+package p2p.broadcast;
 
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import p2p.util.Data;
 
 public class NetworkJoin implements Runnable {
     
