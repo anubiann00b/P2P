@@ -1,11 +1,13 @@
 package p2p.broadcast;
 
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 import p2p.Main;
+import p2p.connection.AddNodeProcess;
 import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
@@ -39,10 +41,28 @@ public class BroadcastListener implements Runnable {
         switch(map.get(Data.TYPE)) {
             case Data.REQUEST_JOIN:
                 if (!Action.suggestAction(Action.ADD_NEW))
-                    new Thread(new Rejection()).start();
+                    new Thread(new Rejection(recvSocket, d.src, d.port)).start();
                 else
                     new Thread(new AddNodeProcess()).start();
                 break;
         }
+    }
+}
+
+class Rejection implements Runnable {
+    
+    DatagramSocket socket;
+    InetAddress destIp;
+    int destPort;
+    
+    Rejection(DatagramSocket s, InetAddress ip, int port) {
+        socket = s;
+        destIp = ip;
+        destPort = port;
+    }
+    
+    @Override
+    public void run() {
+        Data.send(socket, destIp, destPort, new Data(Data.REJECT_JOIN));
     }
 }
