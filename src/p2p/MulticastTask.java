@@ -1,6 +1,7 @@
 package p2p;
 
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
@@ -10,9 +11,10 @@ public class MulticastTask implements Runnable {
         DISCONNECTED, CONNECTING, CONNECTED, CREATE;
     }
     
-    private static final int CONNECTION_TIMEOUT = 5000;
+    private static final int CONNECTION_TIMEOUT = 1000;
     private State state;
-    DatagramSocket socket;
+    DatagramSocket sendSocket;
+    DatagramSocket recvSocket;
     
     public MulticastTask() {
         state = State.DISCONNECTED;
@@ -21,9 +23,9 @@ public class MulticastTask implements Runnable {
     @Override
     public void run() {
         try {
-            socket = new DatagramSocket();
-            socket.setSoTimeout(CONNECTION_TIMEOUT);
-            socket.setBroadcast(true);
+            sendSocket = new DatagramSocket();
+            sendSocket.setSoTimeout(CONNECTION_TIMEOUT);
+            sendSocket.setBroadcast(true);
         } catch (SocketException e) {
             throw new RuntimeException("Can't setup socket: " + e);
         }
@@ -32,10 +34,10 @@ public class MulticastTask implements Runnable {
 
         while (state == State.CONNECTING) {
             Data request = new Data(Data.REQUEST_JOIN);
-            Data.send(socket, request);
+            Data.send(sendSocket, request);
             Data d;
             try {
-                d = Data.receive(socket);
+                d = Data.receive(sendSocket);
             } catch (SocketTimeoutException e) {
                 state = State.CREATE;
                 break;
@@ -43,16 +45,23 @@ public class MulticastTask implements Runnable {
             System.out.println(d);
         }
         if (state == State.CONNECTED)
-            setupConnection();
+            joinNetwork();
         if (state == State.CREATE)
             createNetwork();
     }
     
     private void createNetwork() {
-        
+        try {
+            recvSocket = new DatagramSocket(null);
+            recvSocket.setBroadcast(true);
+            recvSocket.setReuseAddress(true);
+            recvSocket.bind(new InetSocketAddress(Main.PORT));
+        } catch (SocketException e) {
+            throw new RuntimeException("Failed to create recv socket: " + e);
+        }
     }
     
-    private void setupConnection() {
+    private void joinNetwork() {
         
     }
 }
