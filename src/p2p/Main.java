@@ -6,6 +6,6 @@ public class Main {
     public static final int PORT = 4242;
     
     public static void main(String[] args) {
-        new Thread(new MulticastTask()).start();
+        new Thread(new NetworkJoin()).start();
     }
 }

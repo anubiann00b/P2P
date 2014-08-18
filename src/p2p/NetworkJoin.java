@@ -1,11 +1,10 @@
 package p2p;
 
 import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public class MulticastTask implements Runnable {
+public class NetworkJoin implements Runnable {
     
     private enum State {
         DISCONNECTED, CONNECTING, CONNECTED, CREATE;
@@ -14,9 +13,9 @@ public class MulticastTask implements Runnable {
     private static final int CONNECTION_TIMEOUT = 1000;
     private State state;
     DatagramSocket sendSocket;
-    DatagramSocket recvSocket;
+    BroadcastReceive broadcastRecv;
     
-    public MulticastTask() {
+    public NetworkJoin() {
         state = State.DISCONNECTED;
     }
     
@@ -44,6 +43,9 @@ public class MulticastTask implements Runnable {
             }
             System.out.println(d);
         }
+        
+        broadcastRecv = new BroadcastReceive();
+        
         if (state == State.CONNECTED)
             joinNetwork();
         if (state == State.CREATE)
@@ -51,17 +53,11 @@ public class MulticastTask implements Runnable {
     }
     
     private void createNetwork() {
-        try {
-            recvSocket = new DatagramSocket(null);
-            recvSocket.setBroadcast(true);
-            recvSocket.setReuseAddress(true);
-            recvSocket.bind(new InetSocketAddress(Main.PORT));
-        } catch (SocketException e) {
-            throw new RuntimeException("Failed to create recv socket: " + e);
-        }
+        new Thread(new BroadcastReceive()).start();
     }
     
     private void joinNetwork() {
         
+        new Thread(new BroadcastReceive()).start();
     }
 }
