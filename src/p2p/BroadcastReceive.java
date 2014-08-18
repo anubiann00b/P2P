@@ -3,6 +3,7 @@ package p2p;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class BroadcastReceive implements Runnable {
     
@@ -18,5 +19,13 @@ public class BroadcastReceive implements Runnable {
         } catch (SocketException e) {
             throw new RuntimeException("Failed to create recv socket: " + e);
         }
+        
+        Data d;
+        try {
+            d = Data.receive(recvSocket);
+        } catch (SocketTimeoutException e) {
+            throw new RuntimeException("Socket timed out: " + e);
+        }
+        
     }
 }
