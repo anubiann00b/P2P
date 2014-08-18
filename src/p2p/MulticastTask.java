@@ -7,7 +7,7 @@ import java.net.SocketTimeoutException;
 public class MulticastTask implements Runnable {
     
     private enum State {
-        DISCONNECTED, CONNECTING, CONNECTED, F___ITSHIPIT;
+        DISCONNECTED, CONNECTING, CONNECTED, CREATE;
     }
     
     private static final int CONNECTION_TIMEOUT = 5000;
@@ -37,10 +37,22 @@ public class MulticastTask implements Runnable {
             try {
                 d = Data.receive(socket);
             } catch (SocketTimeoutException e) {
-                state = State.F___ITSHIPIT;
+                state = State.CREATE;
                 break;
             }
             System.out.println(d);
         }
+        if (state == State.CONNECTED)
+            setupConnection();
+        if (state == State.CREATE)
+            createNetwork();
+    }
+    
+    private void createNetwork() {
+        
+    }
+    
+    private void setupConnection() {
+        
     }
 }
