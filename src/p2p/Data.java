@@ -20,6 +20,10 @@ public class Data {
         buf = s.getBytes();
     }
     
+    public Data(byte[] b) {
+        buf = b;
+    }
+    
     public static void send(DatagramSocket s, Data d) {
         try {
             s.send(new DatagramPacket(d.buf, d.buf.length, InetAddress.getByName(Main.IP), Main.PORT));
