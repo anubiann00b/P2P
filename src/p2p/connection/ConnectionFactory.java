@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import p2p.Main;
+import p2p.util.Debug;
 
-public class ConnectionAccept implements Runnable {
+public class ConnectionFactory implements Runnable {
     
     private ServerSocket server;
     private int connected;
@@ -28,6 +29,7 @@ public class ConnectionAccept implements Runnable {
                 throw new RuntimeException("Failed to get connection " + e);
             }
             
+            Debug.print("Made connection to " + s.getRemoteSocketAddress() + ":" + s.getPort());
             new Thread(new Connection(s, this)).start();
         }
     }

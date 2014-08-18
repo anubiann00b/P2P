@@ -1,7 +1,8 @@
 package p2p;
 
-import p2p.broadcast.NetworkJoin;
+import p2p.broadcast.ScoutingProcess;
 import p2p.util.Data;
+import p2p.util.Debug;
 
 public class Main {
     
@@ -11,6 +12,7 @@ public class Main {
     
     public static void main(String[] args) {
         Data.init();
-        new Thread(new NetworkJoin()).start();
+        Debug.print("Starting.");
+        new Thread(new ScoutingProcess()).start();
     }
 }

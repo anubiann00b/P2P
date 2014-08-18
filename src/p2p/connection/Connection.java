@@ -8,10 +8,10 @@ import p2p.util.Data;
 
 public class Connection implements Runnable {
     
-    private ConnectionAccept connectionAccept;
+    private ConnectionFactory connectionAccept;
     private Socket socket;
 
-    public Connection(Socket s, ConnectionAccept c) {
+    public Connection(Socket s, ConnectionFactory c) {
         socket = s;
         connectionAccept = c;
     }

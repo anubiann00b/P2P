@@ -3,9 +3,11 @@ package p2p.broadcast;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import p2p.connection.ConnectionFactory;
 import p2p.util.Data;
+import p2p.util.Debug;
 
-public class NetworkJoin implements Runnable {
+public class ScoutingProcess implements Runnable {
     
     private enum State {
         DISCONNECTED, CONNECTING, CONNECTED, CREATE;
@@ -14,9 +16,9 @@ public class NetworkJoin implements Runnable {
     private static final int CONNECTION_TIMEOUT = 1000;
     private State state;
     DatagramSocket sendSocket;
-    BroadcastReceive broadcastRecv;
+    BroadcastListener broadcastRecv;
     
-    public NetworkJoin() {
+    public ScoutingProcess() {
         state = State.DISCONNECTED;
     }
     
@@ -29,9 +31,11 @@ public class NetworkJoin implements Runnable {
         } catch (SocketException e) {
             throw new RuntimeException("Can't setup socket: " + e);
         }
-
+        
+        Debug.print("Opened scouting socket, attempting to connect.");
+        
         state = State.CONNECTING;
-
+        
         while (state == State.CONNECTING) {
             Data request = new Data(Data.REQUEST_JOIN);
             Data.send(sendSocket, request);
@@ -40,12 +44,16 @@ public class NetworkJoin implements Runnable {
                 d = Data.receive(sendSocket);
             } catch (SocketTimeoutException e) {
                 state = State.CREATE;
+                Debug.print("No response, creating network.");
                 break;
             }
-            System.out.println(d);
+            if (d.interperet().get(Data.TYPE).equals(Data.ACCEPT_JOIN)) {
+                Debug.print("Response, found network.");
+                state = State.CONNECTED;
+            }
         }
         
-        broadcastRecv = new BroadcastReceive();
+        broadcastRecv = new BroadcastListener();
         
         if (state == State.CONNECTED)
             joinNetwork();
@@ -54,11 +62,11 @@ public class NetworkJoin implements Runnable {
     }
     
     private void createNetwork() {
-        new Thread(new BroadcastReceive()).start();
+        new Thread(new BroadcastListener()).start();
     }
     
     private void joinNetwork() {
-        
-        new Thread(new BroadcastReceive()).start();
+        new Thread(new ConnectionFactory()).start();
+        new Thread(new BroadcastListener()).start();
     }
 }
