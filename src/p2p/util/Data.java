@@ -97,4 +97,8 @@ public class Data {
     public String toString() {
         return new String(buf);
     }
+
+    public String type() {
+        return new String(buf).substring(0, 2);
+    }
 }

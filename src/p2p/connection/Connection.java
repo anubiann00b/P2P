@@ -19,6 +19,8 @@ public class Connection implements Runnable {
     private InetAddress addr;
     private int port;
     
+    boolean sentConfirm = false;
+    
     public Connection(InetAddress s, int p) {
         addr = s;
         port = p;
@@ -30,6 +32,8 @@ public class Connection implements Runnable {
     }
     
     public void send(Data d) {
+        if (d.type().equals(Data.CONFIRM_JOIN))
+            sentConfirm = true;
         try {
             socket.getOutputStream().write(d.buf);
         } catch (IOException e) {
