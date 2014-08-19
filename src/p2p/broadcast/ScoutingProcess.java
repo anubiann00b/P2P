@@ -16,7 +16,6 @@ public class ScoutingProcess implements Runnable {
     private static final int CONNECTION_TIMEOUT = 1000;
     private State state;
     DatagramSocket sendSocket;
-    BroadcastListener broadcastRecv;
     
     public ScoutingProcess() {
         state = State.DISCONNECTED;
@@ -52,8 +51,6 @@ public class ScoutingProcess implements Runnable {
                 state = State.CONNECTED;
             }
         }
-        
-        broadcastRecv = new BroadcastListener();
         
         if (state == State.CONNECTED)
             joinNetwork();

@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
-
 import p2p.Main;
 
 public class Data {
@@ -46,6 +45,10 @@ public class Data {
     
     public Data(byte[] b) {
         buf = b;
+    }
+    
+    public Data(String type, String data) {
+        buf = (type + data).getBytes();
     }
     
     public Map<String, String> interperet() {
