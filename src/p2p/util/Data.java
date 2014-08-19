@@ -17,9 +17,11 @@ public class Data {
     public static final String ACCEPT_JOIN = "AJ";
     public static final String REJECT_JOIN = "RE";
     public static final String FIRST_CONNECTION = "FC";
+    public static final String CONFIRM_JOIN = "CJ";
     
-    public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
-    public static String TYPE = "TYPE";
+    public static final String NUM_CONNECTIONS = "NUM_CONNECTIONS";
+    public static final String TYPE = "TYPE";
+    public static final String NEW_IP = "NEW_IP";
     
     private static Map<String, Interpreter> interpreters;
     
@@ -29,6 +31,7 @@ public class Data {
         interpreters.put(REQUEST_JOIN, Interpreter.BASIC);
         interpreters.put(ACCEPT_JOIN, Interpreter.BASIC);
         interpreters.put(REJECT_JOIN, Interpreter.BASIC);
+        interpreters.put(CONFIRM_JOIN, Interpreter.CONFIRM_JOIN);
     }
     
     public byte[] buf;

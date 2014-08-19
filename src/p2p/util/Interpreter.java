@@ -13,9 +13,18 @@ public interface Interpreter {
     };
     
     public static final Interpreter FIRST_PACKET = s -> {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = BASIC.interpret(s);
         String connections = s.substring(2, 4);
         map.put(Data.NUM_CONNECTIONS, connections);
+        return map;
+    };
+    
+    public static final Interpreter CONFIRM_JOIN = s -> {
+        Map<String, String> map = BASIC.interpret(s);
+        int space = s.indexOf(' ');
+        String ip = s.substring(2, space);
+        map.put(Data.NEW_IP, ip);
+        String port = s.substring(space, s.indexOf(' ', space+1));
         return map;
     };
     
