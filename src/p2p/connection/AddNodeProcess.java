@@ -18,9 +18,9 @@ public class AddNodeProcess implements Runnable {
     @Override
     public void run() {
         Debug.print("Attempting to add new node.");
-        for (Connection c : Connection.MANAGER.sockets) {
+        Connection.MANAGER.sockets.stream().forEach((c) -> {
             c.send(new Data(Data.CONFIRM_JOIN, destIp.getHostAddress() + ' ' + destPort));
-        }
+        });
     }
 }
 
