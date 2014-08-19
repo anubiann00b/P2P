@@ -16,7 +16,7 @@ public class Data {
     public static final String REQUEST_JOIN = "RJ";
     public static final String ACCEPT_JOIN = "AJ";
     public static final String REJECT_JOIN = "RE";
-    public static final String FIRST_PACKET = "FP";
+    public static final String FIRST_CONNECTION = "FC";
     
     public static String NUM_CONNECTIONS = "NUM_CONNECTIONS";
     public static String TYPE = "TYPE";
@@ -25,7 +25,7 @@ public class Data {
     
     public static void init() {
         interpreters = new HashMap<String, Interpreter>();
-        interpreters.put(FIRST_PACKET, Interpreter.FIRST_PACKET);
+        interpreters.put(FIRST_CONNECTION, Interpreter.FIRST_PACKET);
         interpreters.put(REQUEST_JOIN, Interpreter.BASIC);
         interpreters.put(ACCEPT_JOIN, Interpreter.BASIC);
         interpreters.put(REJECT_JOIN, Interpreter.BASIC);

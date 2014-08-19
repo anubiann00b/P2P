@@ -31,6 +31,8 @@ public class ConnectionFactory implements Runnable {
             
             Debug.print("Made connection to " + s.getRemoteSocketAddress() + ":" + s.getPort());
             new Thread(new Connection(s, this)).start();
+            
+            connected++;
         }
     }
 }
