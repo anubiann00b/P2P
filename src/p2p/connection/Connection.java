@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Map;
+import p2p.util.Action;
 import p2p.util.Data;
 
 public class Connection implements Runnable {
@@ -68,6 +70,20 @@ public class Connection implements Runnable {
                 case Data.FIRST_CONNECTION:
                     int numConnections = Integer.valueOf(data.get(Data.NUM_CONNECTIONS));
                     connectionAccept.setConnections(numConnections);
+                    break;
+                case Data.CONFIRM_JOIN:
+                    InetAddress ip;
+                    try {
+                        ip = InetAddress.getByName(data.get(Data.NEW_IP));
+                    } catch (UnknownHostException e) {
+                        throw new RuntimeException("Failed to interperet IP: " + e);
+                    }
+                    
+                    int newPort = Integer.valueOf((data.get(Data.NEW_PORT)));
+                    if (Action.suggestAction(new Action(Action.Type.ADD_NEW, ip, newPort)))
+                        send(new Data(Data.ACKNOWLEDGE));
+                    else
+                        send(new Data(Data.NO_ACKNOWLEDGE));
                     break;
             }
         }

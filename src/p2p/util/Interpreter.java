@@ -25,6 +25,7 @@ public interface Interpreter {
         String ip = s.substring(2, space);
         map.put(Data.NEW_IP, ip);
         String port = s.substring(space, s.indexOf(' ', space+1));
+        map.put(Data.NEW_PORT, port);
         return map;
     };
     

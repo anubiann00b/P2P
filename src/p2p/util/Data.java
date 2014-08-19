@@ -18,10 +18,13 @@ public class Data {
     public static final String REJECT_JOIN = "RE";
     public static final String FIRST_CONNECTION = "FC";
     public static final String CONFIRM_JOIN = "CJ";
+    public static final String ACKNOWLEDGE = "AK";
+    public static final String NO_ACKNOWLEDGE = "NA";
     
     public static final String NUM_CONNECTIONS = "NUM_CONNECTIONS";
     public static final String TYPE = "TYPE";
     public static final String NEW_IP = "NEW_IP";
+    public static String NEW_PORT = "NEW_PORT";
     
     private static Map<String, Interpreter> interpreters;
     
