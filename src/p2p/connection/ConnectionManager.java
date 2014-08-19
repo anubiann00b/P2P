@@ -1,8 +1,8 @@
 package p2p.connection;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionManager {
     
@@ -11,7 +11,7 @@ public class ConnectionManager {
     public List<Connection> sockets;
     
     private ConnectionManager() {
-        sockets = new ArrayList<Connection>();
+        sockets = new CopyOnWriteArrayList<Connection>();
     }
 
     void connect(InetAddress destIp, int destPort) {
