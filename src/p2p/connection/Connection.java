@@ -27,6 +27,14 @@ public class Connection implements Runnable {
         connectionAccept = c;
     }
     
+    public void send(Data d) {
+        try {
+            socket.getOutputStream().write(d.buf);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to send data: " + e);
+        }
+    }
+    
     @Override
     public void run() {
         if (socket == null) {

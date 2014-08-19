@@ -10,6 +10,9 @@ public class AddNodeProcess implements Runnable {
     @Override
     public void run() {
         Debug.print("Attempting to add new node.");
+        for (Connection c : Connection.MANAGER.sockets) {
+            c.send(new Data());
+        }
     }
 }
 

@@ -31,7 +31,7 @@ public class Data {
         interpreters.put(REJECT_JOIN, Interpreter.BASIC);
     }
     
-    private byte[] buf;
+    public byte[] buf;
     public InetAddress src;
     public int port;
     
