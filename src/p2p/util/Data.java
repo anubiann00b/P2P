@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import p2p.Main;
@@ -72,9 +73,9 @@ public class Data {
     
     public static void send(DatagramSocket s, Data d) {
         try {
-            s.send(new DatagramPacket(d.buf, d.buf.length, InetAddress.getByName(Main.IP), Main.PORT));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to send: " + e);
+            send(s, InetAddress.getByName(Main.IP), Main.PORT, d);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException("Something has gone horribly wrong" + e);
         }
     }
     
@@ -95,7 +96,7 @@ public class Data {
     
     @Override
     public String toString() {
-        return new String(buf);
+        return new String(buf).trim();
     }
 
     public String type() {

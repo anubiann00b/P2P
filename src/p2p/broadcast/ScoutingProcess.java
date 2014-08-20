@@ -13,7 +13,7 @@ public class ScoutingProcess implements Runnable {
         DISCONNECTED, CONNECTING, CONNECTED, CREATE;
     }
     
-    private static final int CONNECTION_TIMEOUT = 10000;
+    private static final int CONNECTION_TIMEOUT = 1000;
     private State state;
     DatagramSocket sendSocket;
     
