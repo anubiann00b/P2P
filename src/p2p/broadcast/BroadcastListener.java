@@ -42,7 +42,7 @@ public class BroadcastListener implements Runnable {
             switch(map.get(Data.TYPE)) {
                 case Data.REQUEST_JOIN:
                     if (Action.suggestAction(new Action(Action.Type.ADD_NEW, d.src, d.port)))
-                        new Thread(new AddNodeProcess(d.src, d.port)).start();
+                        new Thread(new AddNodeProcess(recvSocket, d.src, d.port)).start();
                     else
                         new Thread(new Rejection(recvSocket, d.src, d.port)).start();
                     break;

@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Map;
 import p2p.util.Action;
 import p2p.util.Data;
+import p2p.util.Debug;
 
 public class Connection implements Runnable {
     
@@ -32,13 +33,30 @@ public class Connection implements Runnable {
     }
     
     public void send(Data d) {
-        if (d.type().equals(Data.CONFIRM_JOIN))
-            sentConfirm = true;
-        try {
-            socket.getOutputStream().write(d.buf);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to send data: " + e);
-        }
+        send(d, 0);
+    }
+    
+    public void send(Data d, int delay) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (delay > 0) {
+                    try {
+                        Thread.sleep(delay);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException("Interrupted!? " + e);
+                    }
+                }
+                Debug.print("Sending packet: " + d);
+                if (d.type().equals(Data.CONFIRM_JOIN))
+                    sentConfirm = true;
+                try {
+                    socket.getOutputStream().write(d.buf);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to send data: " + e);
+                }
+            }
+        }).start();
     }
     
     @Override
@@ -50,6 +68,10 @@ public class Connection implements Runnable {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to connect socket: " + e);
             }
+            
+            Debug.print("Connected to " + addr + ":" + port);
+            
+            send(new Data(Data.FIRST_CONNECTION, String.valueOf(Connection.MANAGER.sockets.size())), 1000);
         }
         
         InputStream recvData;
@@ -61,6 +83,8 @@ public class Connection implements Runnable {
             throw new RuntimeException("Failed to get input stream: " + e);
         }
         
+        Debug.print("Ready to recieve.");
+        
         while(true) {
             try {
                 recvData.read(recvBuf);
@@ -69,6 +93,8 @@ public class Connection implements Runnable {
             }
 
             Data d = new Data(recvBuf);
+            Debug.print("Recieved: " + d);
+            
             Map<String, String> data = d.interperet();
             switch(data.get(Data.TYPE)) {
                 case Data.FIRST_CONNECTION:

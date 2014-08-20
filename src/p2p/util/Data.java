@@ -31,7 +31,7 @@ public class Data {
     
     public static void init() {
         interpreters = new HashMap<String, Interpreter>();
-        interpreters.put(FIRST_CONNECTION, Interpreter.FIRST_PACKET);
+        interpreters.put(FIRST_CONNECTION, Interpreter.FIRST_CONNECTION);
         interpreters.put(REQUEST_JOIN, Interpreter.BASIC);
         interpreters.put(ACCEPT_JOIN, Interpreter.BASIC);
         interpreters.put(REJECT_JOIN, Interpreter.BASIC);

@@ -12,9 +12,9 @@ public interface Interpreter {
         return map;
     };
     
-    public static final Interpreter FIRST_PACKET = s -> {
+    public static final Interpreter FIRST_CONNECTION = s -> {
         Map<String, String> map = BASIC.interpret(s);
-        String connections = s.substring(2, 4);
+        String connections = s.substring(2, 4).trim();
         map.put(Data.NUM_CONNECTIONS, connections);
         return map;
     };
