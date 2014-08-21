@@ -123,10 +123,16 @@ public class Connection implements Runnable {
                     break;
                 case Data.ACKNOWLEDGE:
                     if(currentProcess == null) {
-                        Debug.print("Error: Recieved acknowledgement without process.");
+                        Debug.print("Error: Recieved ACK without process.");
                         continue;
                     }
-                    
+                    currentProcess.response(this, true);
+                case Data.NO_ACKNOWLEDGE:
+                    if(currentProcess == null) {
+                        Debug.print("Error: Recieved NACK without process.");
+                        continue;
+                    }
+                    currentProcess.response(this, false);
             }
         }
     }
