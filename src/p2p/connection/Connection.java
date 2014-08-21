@@ -114,7 +114,6 @@ public class Connection implements Runnable {
                         throw new RuntimeException("Failed to interperet IP: " + e);
                     }
                     
-                    int newPort = Integer.valueOf((data.get(Data.NEW_PORT)));
                     int actionResult = Action.suggestAction(new Action(Action.Type.ADD_NEW, d.src, d.port, null));
                     if (actionResult == 1)
                         send(new Data(Data.ACKNOWLEDGE));

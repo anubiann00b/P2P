@@ -1,13 +1,13 @@
 package p2p.broadcast;
 
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Map;
 import p2p.Main;
 import p2p.connection.AddNodeProcess;
+import p2p.connection.task.Rejection;
 import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
@@ -49,24 +49,5 @@ public class BroadcastListener implements Runnable {
                     break;
             }
         }
-    }
-}
-
-class Rejection implements Runnable {
-    
-    DatagramSocket socket;
-    InetAddress destIp;
-    int destPort;
-    
-    Rejection(DatagramSocket s, InetAddress ip, int port) {
-        socket = s;
-        destIp = ip;
-        destPort = port;
-    }
-    
-    @Override
-    public void run() {
-        Debug.print("Rejecting join from " + destIp + ":" + destPort);
-        Data.send(socket, destIp, destPort, new Data(Data.REJECT_JOIN));
     }
 }

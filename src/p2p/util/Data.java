@@ -55,7 +55,7 @@ public class Data {
     }
     
     public Data(String type, String data) {
-        buf = (type + data).getBytes();
+        buf = (type + " " +  data).getBytes();
     }
     
     public Map<String, String> interperet() {

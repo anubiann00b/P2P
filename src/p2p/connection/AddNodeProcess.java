@@ -2,7 +2,8 @@ package p2p.connection;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import p2p.Main;
+import p2p.connection.task.Acceptance;
+import p2p.connection.task.Rejection;
 import p2p.util.Data;
 import p2p.util.Debug;
 
@@ -34,7 +35,23 @@ public class AddNodeProcess extends NetworkProcess {
         });
         
         int nodes = Connection.MANAGER.sockets.size();
-        while (socketAcceptCounter>0 && socketAcceptCounter<nodes);
+        while (socketAcceptCounter<nodes) {
+            try {
+                synchronized(this) {
+                    this.wait();
+                }
+            } catch (InterruptedException e) {
+                Debug.print("Interrupted! Counter at " + socketAcceptCounter);
+            }
+            
+            if (socketAcceptCounter < 0)
+                break;
+        }
+        
+        if (socketAcceptCounter < 0)
+            new Thread(new Rejection(socket, destIp, destPort)).start();
+        else
+            new Thread(new Acceptance(socket, destIp, destPort)).start();
     }
 
     @Override
@@ -43,25 +60,8 @@ public class AddNodeProcess extends NetworkProcess {
             socketAcceptCounter++;
         else
             socketAcceptCounter = Integer.MIN_VALUE;
-    }
-}
-
-class Acceptance implements Runnable {
-    
-    DatagramSocket socket;
-    InetAddress destIp;
-    int destPort;
-    
-    Acceptance(DatagramSocket s, InetAddress ip, int port) {
-        socket = s;
-        destIp = ip;
-        destPort = port;
-    }
-    
-    @Override
-    public void run() {
-        Debug.print("Accepting join from " + destIp.getHostAddress() + ":" + destPort);
-        Data.send(socket, destIp, destPort, new Data(Data.ACCEPT_JOIN));
-        Connection.MANAGER.connect(destIp, Main.PORT);
+        synchronized(this) {
+            this.notify();
+        }
     }
 }

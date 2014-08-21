@@ -15,7 +15,7 @@ public class ConnectionManager {
         sockets = new CopyOnWriteArrayList<Connection>();
     }
     
-    void connect(InetAddress destIp, int destPort) {
+    public void connect(InetAddress destIp, int destPort) {
         Debug.print("Opening connection to " + destIp + ":" + destPort);
         Connection c = new Connection(destIp, destPort);
         sockets.add(c);
