@@ -6,16 +6,19 @@ import p2p.Main;
 import p2p.util.Data;
 import p2p.util.Debug;
 
-public class AddNodeProcess implements Runnable {
+public class AddNodeProcess extends NetworkProcess {
     
     DatagramSocket socket;
     InetAddress destIp;
     int destPort;
     
+    int socketAcceptCounter;
+    
     public AddNodeProcess(DatagramSocket s, InetAddress ip, int p) {
         destIp = ip;
         destPort = p;
         socket = s;
+        socketAcceptCounter = 0;
     }
     
     @Override
@@ -27,8 +30,19 @@ public class AddNodeProcess implements Runnable {
         }
         
         Connection.MANAGER.sockets.stream().forEach((c) -> {
-            c.send(new Data(Data.CONFIRM_JOIN, destIp.getHostAddress() + ' ' + destPort));
+            c.send(new Data(Data.CONFIRM_JOIN, destIp.getHostAddress() + ' ' + destPort), this);
         });
+        
+        int nodes = Connection.MANAGER.sockets.size();
+        while (socketAcceptCounter>0 && socketAcceptCounter<nodes);
+    }
+
+    @Override
+    public void response(Connection c, boolean r) {
+        if (r)
+            socketAcceptCounter++;
+        else
+            socketAcceptCounter = Integer.MIN_VALUE;
     }
 }
 

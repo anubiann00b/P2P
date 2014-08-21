@@ -1,6 +1,6 @@
 package p2p;
 
-import p2p.broadcast.ScoutingProcess;
+import p2p.broadcast.ScoutingTask;
 import p2p.util.Data;
 import p2p.util.Debug;
 
@@ -13,6 +13,6 @@ public class Main {
     public static void main(String[] args) {
         Data.init();
         Debug.print("Starting.");
-        new Thread(new ScoutingProcess()).start();
+        new Thread(new ScoutingTask()).start();
     }
 }

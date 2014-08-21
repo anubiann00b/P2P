@@ -7,7 +7,7 @@ import p2p.connection.ConnectionFactory;
 import p2p.util.Data;
 import p2p.util.Debug;
 
-public class ScoutingProcess implements Runnable {
+public class ScoutingTask implements Runnable {
     
     private enum State {
         DISCONNECTED, CONNECTING, CONNECTED, CREATE;
@@ -17,7 +17,7 @@ public class ScoutingProcess implements Runnable {
     private State state;
     DatagramSocket sendSocket;
     
-    public ScoutingProcess() {
+    public ScoutingTask() {
         state = State.DISCONNECTED;
     }
     

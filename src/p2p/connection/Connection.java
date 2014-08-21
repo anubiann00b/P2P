@@ -19,6 +19,7 @@ public class Connection implements Runnable {
     private Socket socket;
     private InetAddress addr;
     private int port;
+    private NetworkProcess currentProcess;
     
     boolean sentConfirm = false;
     
@@ -32,29 +33,33 @@ public class Connection implements Runnable {
         connectionAccept = c;
     }
     
+    public void send(Data d, NetworkProcess p) {
+        if (currentProcess != null)
+            Debug.print("Error: currentProcess in connection not reset.");
+        currentProcess = p;
+        send(d);
+    }
+    
     public void send(Data d) {
         send(d, 0);
     }
     
     public void send(Data d, int delay) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (delay > 0) {
-                    try {
-                        Thread.sleep(delay);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException("Interrupted!? " + e);
-                    }
-                }
-                Debug.print("Sending packet: " + d);
-                if (d.type().equals(Data.CONFIRM_JOIN))
-                    sentConfirm = true;
+        new Thread(() -> {
+            if (delay > 0) {
                 try {
-                    socket.getOutputStream().write(d.buf);
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to send data: " + e);
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("Interrupted!? " + e);
                 }
+            }
+            Debug.print("Sending packet: " + d);
+            if (d.type().equals(Data.CONFIRM_JOIN))
+                sentConfirm = true;
+            try {
+                socket.getOutputStream().write(d.buf);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to send data: " + e);
             }
         }).start();
     }
@@ -110,11 +115,18 @@ public class Connection implements Runnable {
                     }
                     
                     int newPort = Integer.valueOf((data.get(Data.NEW_PORT)));
-                    if (Action.suggestAction(new Action(Action.Type.ADD_NEW, ip, newPort)))
+                    int actionResult = Action.suggestAction(new Action(Action.Type.ADD_NEW, d.src, d.port, null));
+                    if (actionResult == 1)
                         send(new Data(Data.ACKNOWLEDGE));
-                    else
+                    else if (actionResult == -1)
                         send(new Data(Data.NO_ACKNOWLEDGE));
                     break;
+                case Data.ACKNOWLEDGE:
+                    if(currentProcess == null) {
+                        Debug.print("Error: Recieved acknowledgement without process.");
+                        continue;
+                    }
+                    
             }
         }
     }
