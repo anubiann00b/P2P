@@ -64,7 +64,6 @@ public class AddNodeProcess extends NetworkProcess {
 
     @Override
     public void response(Connection c, boolean r) {
-        System.out.println("Response: " + r);
         if (r)
             socketAcceptCounter++;
         else

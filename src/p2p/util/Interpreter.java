@@ -22,7 +22,6 @@ public interface Interpreter {
     public static final Interpreter CONFIRM_JOIN = s -> {
         Map<String, String> map = BASIC.interpret(s);
         int space = s.indexOf(' ', 3);
-        System.out.println(space); // CJ 192.168.1.105 64584
         String ip = s.substring(3, space);
         map.put(Data.NEW_IP, ip);
         String port = s.substring(space+1, s.length());
