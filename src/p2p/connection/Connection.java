@@ -63,7 +63,10 @@ public class Connection implements Runnable {
                     throw new RuntimeException("Interrupted!? " + e);
                 }
             }
-            Debug.print("Sending packet: " + d);
+            
+            if (!d.type().equals(Data.DATA))
+                Debug.print("Sending packet: " + d);
+            
             if (d.type().equals(Data.CONFIRM_JOIN))
                 sentConfirm = true;
             try {
@@ -105,7 +108,6 @@ public class Connection implements Runnable {
             @Override
             public void run() {
                 Data d = new Data(Data.DATA, Connection.this.connData.raw);
-                System.out.println(d);
                 Connection.this.send(d);
             }
         }, 0, 2000);
@@ -118,7 +120,9 @@ public class Connection implements Runnable {
             }
             
             Data d = new Data(recvBuf);
-            Debug.print("Recieved: " + d);
+            
+            if (!d.type().equals(Data.DATA))
+                Debug.print("Recieved: " + d);
             
             Map<String, String> data = d.interperet();
             switch(data.get(Data.TYPE)) {
