@@ -50,6 +50,14 @@ public class ScoutingTask implements Runnable {
                 Debug.print("Response, found network.");
                 state = State.CONNECTED;
             }
+            if (d.interperet().get(Data.TYPE).equals(Data.REJECT_JOIN)) {
+                Debug.print("Join rejected by network. Retry in 1000-5000ms");
+                try {
+                    Thread.sleep((long) (1000 + Math.random()*4000));
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("Interrupted!?" + e);
+                }
+            }
         }
         
         if (state == State.CONNECTED)

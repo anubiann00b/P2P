@@ -35,6 +35,8 @@ public class Data {
         interpreters.put(REQUEST_JOIN, Interpreter.BASIC);
         interpreters.put(ACCEPT_JOIN, Interpreter.BASIC);
         interpreters.put(REJECT_JOIN, Interpreter.BASIC);
+        interpreters.put(ACKNOWLEDGE, Interpreter.BASIC);
+        interpreters.put(NO_ACKNOWLEDGE, Interpreter.BASIC);
         interpreters.put(CONFIRM_JOIN, Interpreter.CONFIRM_JOIN);
     }
     
@@ -60,7 +62,7 @@ public class Data {
     
     public Map<String, String> interperet() {
         String s = new String(buf);
-        return interpreters.get(s.substring(0, 2)).interpret(s);
+        return interpreters.get(s.substring(0, 2)).interpret(s.trim());
     }
     
     public static void send(DatagramSocket s, InetAddress destIp, int destPort, Data d) {

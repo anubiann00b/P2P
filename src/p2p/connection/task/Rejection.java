@@ -2,6 +2,7 @@ package p2p.connection.task;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
 
@@ -21,5 +22,6 @@ public class Rejection implements Runnable {
     public void run() {
         Debug.print("Rejecting join from " + destIp + ":" + destPort);
         Data.send(socket, destIp, destPort, new Data(Data.REJECT_JOIN));
+        Action.suggestAction(null);
     }
 }

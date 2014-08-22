@@ -33,6 +33,10 @@ public class Connection implements Runnable {
         connectionAccept = c;
     }
     
+    void processFinished() {
+        currentProcess = null;
+    }
+    
     public void send(Data d, NetworkProcess p) {
         if (currentProcess != null)
             Debug.print("Error: currentProcess in connection not reset.");
@@ -96,7 +100,7 @@ public class Connection implements Runnable {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to get read from stream: " + e);
             }
-
+            
             Data d = new Data(recvBuf);
             Debug.print("Recieved: " + d);
             
@@ -107,18 +111,18 @@ public class Connection implements Runnable {
                     connectionAccept.setConnections(numConnections);
                     break;
                 case Data.CONFIRM_JOIN:
-                    InetAddress ip;
+                    int actionResult;
                     try {
-                        ip = InetAddress.getByName(data.get(Data.NEW_IP));
+                        actionResult = Action.suggestAction(new Action(Action.Type.ADD_NEW,
+                                InetAddress.getByName(data.get(Data.NEW_IP)),
+                                Integer.valueOf(data.get(Data.NEW_PORT)), null));
                     } catch (UnknownHostException e) {
-                        throw new RuntimeException("Failed to interperet IP: " + e);
+                        throw new RuntimeException("What?! " + e);
                     }
-                    
-                    int actionResult = Action.suggestAction(new Action(Action.Type.ADD_NEW, d.src, d.port, null));
-                    if (actionResult == 1)
-                        send(new Data(Data.ACKNOWLEDGE));
-                    else if (actionResult == -1)
+                    if (actionResult == -1)
                         send(new Data(Data.NO_ACKNOWLEDGE));
+                    else
+                        send(new Data(Data.ACKNOWLEDGE));
                     break;
                 case Data.ACKNOWLEDGE:
                     if(currentProcess == null) {
@@ -126,12 +130,14 @@ public class Connection implements Runnable {
                         continue;
                     }
                     currentProcess.response(this, true);
+                    break;
                 case Data.NO_ACKNOWLEDGE:
                     if(currentProcess == null) {
                         Debug.print("Error: Recieved NACK without process.");
                         continue;
                     }
                     currentProcess.response(this, false);
+                    break;
             }
         }
     }

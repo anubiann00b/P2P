@@ -29,6 +29,11 @@ public class Action {
      * there's already an action pending.
      */
     public static int suggestAction(Action a) {
+        Debug.print((current!=null?current.toString():"null") + " -> " + (a!=null?a.toString():"null"));
+        if (a == null) {
+            current = null;
+            return 1;
+        }
         if (current == null) {
             current = a;
             return 1;
@@ -46,7 +51,12 @@ public class Action {
         Action a = (Action) o;
         return type.equals(a.type) && ip.equals(a.ip) && port==a.port;
     }
-
+    
+    @Override
+    public String toString() {
+        return type.toString();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

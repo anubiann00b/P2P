@@ -4,6 +4,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import p2p.connection.task.Acceptance;
 import p2p.connection.task.Rejection;
+import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
 
@@ -27,6 +28,7 @@ public class AddNodeProcess extends NetworkProcess {
         Debug.print("Attempting to add new node.");
         if (Connection.MANAGER.sockets.isEmpty()) {
             new Thread(new Acceptance(socket, destIp, destPort)).start();
+            Action.suggestAction(null);
             return;
         }
         
@@ -48,14 +50,21 @@ public class AddNodeProcess extends NetworkProcess {
                 break;
         }
         
+        Action.suggestAction(null);
+        
         if (socketAcceptCounter < 0)
             new Thread(new Rejection(socket, destIp, destPort)).start();
         else
             new Thread(new Acceptance(socket, destIp, destPort)).start();
+        
+        Connection.MANAGER.sockets.stream().forEach((c) -> {
+            c.processFinished();
+        });
     }
 
     @Override
     public void response(Connection c, boolean r) {
+        System.out.println("Response: " + r);
         if (r)
             socketAcceptCounter++;
         else
