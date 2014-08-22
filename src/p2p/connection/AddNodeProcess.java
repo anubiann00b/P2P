@@ -50,8 +50,6 @@ public class AddNodeProcess extends NetworkProcess {
                 break;
         }
         
-        Action.suggestAction(null);
-        
         if (socketAcceptCounter < 0)
             new Thread(new Rejection(socket, destIp, destPort)).start();
         else

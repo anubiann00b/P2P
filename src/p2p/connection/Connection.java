@@ -81,6 +81,7 @@ public class Connection implements Runnable {
             }
             
             Debug.print("Connected to " + addr.getHostAddress() + ":" + port);
+            Action.suggestAction(null);
             
             send(new Data(Data.FIRST_CONNECTION, String.valueOf(Connection.MANAGER.sockets.size())), 1000);
         }
