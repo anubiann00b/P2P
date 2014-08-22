@@ -31,6 +31,8 @@ public class Connection implements Runnable {
     public Connection(Socket s, ConnectionFactory c) {
         socket = s;
         connectionAccept = c;
+        addr = s.getInetAddress();
+        port = s.getPort();
     }
     
     void processFinished() {
@@ -78,7 +80,7 @@ public class Connection implements Runnable {
                 throw new RuntimeException("Failed to connect socket: " + e);
             }
             
-            Debug.print("Connected to " + addr + ":" + port);
+            Debug.print("Connected to " + addr.getHostAddress() + ":" + port);
             
             send(new Data(Data.FIRST_CONNECTION, String.valueOf(Connection.MANAGER.sockets.size())), 1000);
         }

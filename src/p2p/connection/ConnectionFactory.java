@@ -55,6 +55,6 @@ public class ConnectionFactory implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException("Failed to close ServerSocket " + e);
         }
-        Debug.print("Connected to network!");
+        Debug.print("Connected to network!\n");
     }
 }

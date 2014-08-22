@@ -27,7 +27,7 @@ public class BroadcastListener implements Runnable {
             throw new RuntimeException("Failed to create recv socket: " + e);
         }
         
-        Debug.print("Starting broadcast listener, waiting for broadcasts.");
+        Debug.print("Starting broadcast listener, waiting for broadcasts.\n");
         
         while(true) {
             Data d;
@@ -37,7 +37,7 @@ public class BroadcastListener implements Runnable {
                 throw new RuntimeException("Socket timed out: " + e);
             }
 
-            Debug.print("Recieved broadcast packet: " + d);
+            Debug.print("\nRecieved broadcast packet: " + d);
             Map<String, String> map = d.interperet();
             switch(map.get(Data.TYPE)) {
                 case Data.REQUEST_JOIN:

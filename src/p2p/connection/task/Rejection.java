@@ -20,7 +20,7 @@ public class Rejection implements Runnable {
     
     @Override
     public void run() {
-        Debug.print("Rejecting join from " + destIp + ":" + destPort);
+        Debug.print("Rejecting join from " + destIp.getHostAddress() + ":" + destPort + "\n");
         Data.send(socket, destIp, destPort, new Data(Data.REJECT_JOIN));
         Action.suggestAction(null);
     }

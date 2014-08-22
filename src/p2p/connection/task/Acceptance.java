@@ -21,8 +21,8 @@ public class Acceptance implements Runnable {
     
     @Override
     public void run() {
-        Debug.print("Accepting join from " + destIp.getHostAddress() + ":" + destPort);
+        Debug.print("Accepting join from " + destIp.getHostAddress() + ":" + destPort + "\n");
         Data.send(socket, destIp, destPort, new Data(Data.ACCEPT_JOIN));
-        Connection.MANAGER.connect(destIp, Main.PORT);
+        Connection.MANAGER.connect(destIp, Main.PORT, destPort);
     }
 }
