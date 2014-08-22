@@ -21,6 +21,7 @@ public class Data {
     public static final String CONFIRM_JOIN = "CJ";
     public static final String ACKNOWLEDGE = "AK";
     public static final String NO_ACKNOWLEDGE = "NA";
+    public static final String DATA = "DA";
     
     public static final String NUM_CONNECTIONS = "NUM_CONNECTIONS";
     public static final String TYPE = "TYPE";
