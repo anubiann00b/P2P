@@ -1,7 +1,8 @@
-package p2p.connection;
+package p2p.connection.process;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import p2p.connection.Connection;
 import p2p.connection.task.Acceptance;
 import p2p.connection.task.Rejection;
 import p2p.util.Action;

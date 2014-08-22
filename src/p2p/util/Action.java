@@ -10,6 +10,10 @@ public class Action {
         ADD_NEW;
     }
     
+    public static final int ADDED = 1;
+    public static final int EXISTED = 0;
+    public static final int REJECTED = -1;
+    
     private static Action current = null;
     
     public final Type type;
@@ -24,22 +28,18 @@ public class Action {
         conn = c;
     }
     
-    /*
-     * Return 1 if new action added, 0 if action already existed, and -1 if
-     * there's already an action pending.
-     */
     public static int suggestAction(Action a) {
         if (a == null) {
             current = null;
-            return 1;
+            return ADDED;
         }
         if (current == null) {
             current = a;
-            return 1;
+            return ADDED;
         } else if (current.equals(a)) {
-            return 0;
+            return EXISTED;
         } else {
-            return -1;
+            return REJECTED;
         }
     }
     

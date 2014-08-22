@@ -1,4 +1,6 @@
-package p2p.connection;
+package p2p.connection.process;
+
+import p2p.connection.Connection;
 
 public abstract class NetworkProcess implements Runnable {
     

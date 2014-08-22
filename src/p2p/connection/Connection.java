@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import p2p.connection.process.NetworkProcess;
 import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
@@ -39,7 +40,7 @@ public class Connection implements Runnable {
         socket = s;
     }
     
-    void processFinished() {
+    public void processFinished() {
         currentProcess = null;
     }
     
@@ -139,7 +140,7 @@ public class Connection implements Runnable {
                     } catch (UnknownHostException e) {
                         throw new RuntimeException("What?! " + e);
                     }
-                    if (actionResult == -1)
+                    if (actionResult == Action.REJECTED)
                         send(new Data(Data.NO_ACKNOWLEDGE));
                     else
                         send(new Data(Data.ACKNOWLEDGE));
