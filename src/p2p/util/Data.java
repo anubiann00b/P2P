@@ -26,7 +26,8 @@ public class Data {
     public static final String NUM_CONNECTIONS = "NUM_CONNECTIONS";
     public static final String TYPE = "TYPE";
     public static final String NEW_IP = "NEW_IP";
-    public static String NEW_PORT = "NEW_PORT";
+    public static final String NEW_PORT = "NEW_PORT";
+    public static final String RAW_DATA = "RAW_DATA";
     
     private static Map<String, Interpreter> interpreters;
     
@@ -39,6 +40,7 @@ public class Data {
         interpreters.put(ACKNOWLEDGE, Interpreter.BASIC);
         interpreters.put(NO_ACKNOWLEDGE, Interpreter.BASIC);
         interpreters.put(CONFIRM_JOIN, Interpreter.CONFIRM_JOIN);
+        interpreters.put(DATA, Interpreter.DATA);
     }
     
     public byte[] buf;

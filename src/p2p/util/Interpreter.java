@@ -29,5 +29,11 @@ public interface Interpreter {
         return map;
     };
     
+    public static final Interpreter DATA = s -> {
+        Map<String, String> map = BASIC.interpret(s);
+        map.put(Data.RAW_DATA, s.substring(3, s.length()));
+        return map;
+    };
+    
     public Map<String, String> interpret(String s);
 }

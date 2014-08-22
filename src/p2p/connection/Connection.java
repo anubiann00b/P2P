@@ -7,6 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import p2p.util.Action;
 import p2p.util.Data;
 import p2p.util.Debug;
@@ -15,24 +17,26 @@ public class Connection implements Runnable {
     
     public static final ConnectionManager MANAGER = ConnectionManager.instance;
     
-    private ConnectionFactory connectionAccept;
-    private Socket socket;
-    private InetAddress addr;
-    private int port;
-    private NetworkProcess currentProcess;
+    ConnectionFactory connectionAccept;
+    Socket socket;
+    InetAddress addr;
+    int port;
+    NetworkProcess currentProcess;
+    
+    ConnectionData connData;
     
     boolean sentConfirm = false;
     
     public Connection(InetAddress s, int p) {
+        connData = new ConnectionData();
         addr = s;
         port = p;
     }
     
     public Connection(Socket s, ConnectionFactory c) {
-        socket = s;
+        this(s.getInetAddress(), s.getPort());
         connectionAccept = c;
-        addr = s.getInetAddress();
-        port = s.getPort();
+        socket = s;
     }
     
     void processFinished() {
@@ -97,6 +101,15 @@ public class Connection implements Runnable {
         
         Debug.print("Ready to recieve.");
         
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Data d = new Data(Data.DATA, Connection.this.connData.raw);
+                System.out.println(d);
+                Connection.this.send(d);
+            }
+        }, 0, 2000);
+        
         while(true) {
             try {
                 recvData.read(recvBuf);
@@ -140,6 +153,9 @@ public class Connection implements Runnable {
                         continue;
                     }
                     currentProcess.response(this, false);
+                    break;
+                case Data.DATA:
+                    connData.update(data.get(Data.RAW_DATA));
                     break;
             }
         }
