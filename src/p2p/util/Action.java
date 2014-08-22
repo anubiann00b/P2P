@@ -29,7 +29,6 @@ public class Action {
      * there's already an action pending.
      */
     public static int suggestAction(Action a) {
-        Debug.print((current!=null?current.toString():"null") + " -> " + (a!=null?a.toString():"null"));
         if (a == null) {
             current = null;
             return 1;
